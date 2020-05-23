@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.InputStream;
 import java.net.URL;
 
@@ -23,33 +25,9 @@ public class MainActivity extends AppCompatActivity {
         photo = findViewById(R.id.photo);
 
         String url = "https://c4.wallpaperflare.com/wallpaper/246/739/689/digital-digital-art-artwork-illustration-abstract-hd-wallpaper-thumb.jpg";
-        new DownloadImageTask(photo).execute(url);
+
+        Picasso.get().load(url).into(photo);
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap>{
-        ImageView target;
 
-        DownloadImageTask(ImageView image){
-            target = image;
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... strings) {
-            String myUrl = strings[0];
-            Bitmap myBitmap = null;
-            try{
-                InputStream inputStream = new URL(myUrl).openStream();
-                myBitmap = BitmapFactory.decodeStream(inputStream);
-            } catch(Exception e){
-                Log.e("Error", e.getMessage());
-            }
-
-            return myBitmap;
-        }
-        @Override
-        protected void onPostExecute(Bitmap bitmap){
-            super.onPostExecute(bitmap);
-            target.setImageBitmap(bitmap);
-        }
-    }
 }
